@@ -2,7 +2,10 @@
 FROM eclipse-temurin:21-jdk-alpine AS builder
 WORKDIR /app
 COPY . .
-RUN ./gradlew build --no-daemon
+
+# Assemble only to skip tests
+# Tests will be ran when pushing to origin
+RUN ./gradlew assemble --no-daemon
 
 # Run stage
 FROM eclipse-temurin:21-jre-alpine
