@@ -3,6 +3,7 @@ package hu.smthy.unique_file_lister.service;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.FileFilter;
 
 @Service
 public class SimpleFileReaderService implements FileReaderService{
@@ -10,7 +11,6 @@ public class SimpleFileReaderService implements FileReaderService{
     public boolean exists(File file) {
         return file.exists();
     }
-
 
     public boolean isDirectory(File file) {
         return file.isDirectory();
@@ -26,7 +26,7 @@ public class SimpleFileReaderService implements FileReaderService{
     }
 
 
-    public File[] listFiles(File file) throws SecurityException {
-        return file.listFiles();
+    public File[] listFiles(File file, FileFilter fileFilter) throws SecurityException {
+        return file.listFiles(fileFilter);
     }
 }

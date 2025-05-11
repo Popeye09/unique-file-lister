@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.nio.file.NotDirectoryException;
 import java.nio.file.Path;
@@ -11,16 +12,17 @@ import java.util.Map;
 import java.util.HashMap;
 
 @Service
-public class UniqueFileRecursiveTreeTraverseService implements UniqueFileService{
+public final class UniqueFileRecursiveTreeTraverseService implements UniqueFileService{
 
     private final FileReaderService fileReaderService;
+    private FileFilter fileFilter;
 
     @Autowired
-    public UniqueFileRecursiveTreeTraverseService(FileReaderService fileReaderService) {
+    public UniqueFileRecursiveTreeTraverseService(final FileReaderService fileReaderService) {
         this.fileReaderService = fileReaderService;
     }
 
-    public Map<String, Integer> uniqueFiles(Path path) throws FileNotFoundException, NotDirectoryException, SecurityException{
+    public Map<String, Integer> getUniqueFiles(Path path, String username) throws FileNotFoundException, NotDirectoryException, SecurityException{
         File file = path.toFile();
 
 
@@ -31,7 +33,8 @@ public class UniqueFileRecursiveTreeTraverseService implements UniqueFileService
             throw new NotDirectoryException("Path must lead to a directory");
         }
         if(!fileReaderService.canRead(file)){
-            throw new SecurityException("Unable to read directory contents: " + file.getName() + " has no read permission for " + System.getProperty("user.name"));
+            throw new SecurityException(
+                    "Unable to read directory contents: " + file.getName() + " has no read permission for " + System.getProperty("user.name"));
         }
 
         Map<String, Integer> map = new HashMap<>();
@@ -45,7 +48,7 @@ public class UniqueFileRecursiveTreeTraverseService implements UniqueFileService
 
         File[] files;
         try{
-            files = fileReaderService.listFiles(path.toFile());
+            files = fileReaderService.listFiles(path.toFile(), fileFilter);
         } catch (SecurityException e) {
             return;
         }
