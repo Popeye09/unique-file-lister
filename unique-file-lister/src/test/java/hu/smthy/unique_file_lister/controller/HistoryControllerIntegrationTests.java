@@ -32,4 +32,20 @@ public class HistoryControllerIntegrationTests {
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isOk());
     }
+
+    @Test
+    public void testHistoryReturnsCorrectData() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/getUnique/bin")
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/history")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].directory").value("/bin"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].timestamp").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].username").value(System.getProperty("user.name")));
+    }
 }
