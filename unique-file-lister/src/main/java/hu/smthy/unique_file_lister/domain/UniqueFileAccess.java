@@ -7,13 +7,28 @@ import java.nio.file.Path;
 
 
 @Entity
-@Table(name = "UniqueFileAccess")
+@Table(name = "history")
 public class UniqueFileAccess {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "unique_file_access_id_sequence")
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "unique_file_access_id_sequence"
+    )
     private Long id;
     private String user;
     private Long timestamp;
     private Path directory;
+    private String extension;
+
+    public UniqueFileAccess(String user, Long timestamp, Path directory, String extension){
+        this.user = user;
+        this.timestamp = timestamp;
+        this.directory = directory;
+        this.extension = extension;
+    }
+
+    public Long getId() {
+        return id;
+    }
 }
