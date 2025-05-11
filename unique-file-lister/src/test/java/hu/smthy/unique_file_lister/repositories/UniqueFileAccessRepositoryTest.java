@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class UniqueFileAccessRepositoryTest {
-    public UniqueFileAccessRepository underTest;
+    private UniqueFileAccessRepository underTest;
 
     @Autowired
     public UniqueFileAccessRepositoryTest(UniqueFileAccessRepository underTest){
@@ -25,11 +25,26 @@ public class UniqueFileAccessRepositoryTest {
     }
 
     @Test
-    public void TestUniqueFileAccessCreateAndRecall(){
+    public void testUniqueFileAccessCreateAndRecall(){
         UniqueFileAccess uniqueFileAccess = TestDataUtil.createTestUniqueFileAccess();
         underTest.save(uniqueFileAccess);
         Optional<UniqueFileAccess> result = underTest.findById(uniqueFileAccess.getId());
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(uniqueFileAccess);
+    }
+
+    @Test
+    public void testUniqueFileAccessReadAll(){
+        UniqueFileAccess uniqueFileAccess1 = TestDataUtil.createRandomUniqueFileAccess();
+        underTest.save(uniqueFileAccess1);
+        UniqueFileAccess uniqueFileAccess2 = TestDataUtil.createRandomUniqueFileAccess();
+        underTest.save(uniqueFileAccess2);
+        UniqueFileAccess uniqueFileAccess3 = TestDataUtil.createRandomUniqueFileAccess();
+        underTest.save(uniqueFileAccess3);
+
+        Iterable<UniqueFileAccess> result = underTest.findAll();
+        assertThat(result)
+                .hasSize(3)
+                .containsExactly(uniqueFileAccess1, uniqueFileAccess2, uniqueFileAccess3);
     }
 }
