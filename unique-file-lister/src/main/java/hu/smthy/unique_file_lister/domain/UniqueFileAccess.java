@@ -3,9 +3,6 @@ package hu.smthy.unique_file_lister.domain;
 
 import jakarta.persistence.*;
 
-import java.nio.file.Path;
-
-
 @Entity
 @Table(name = "history")
 public class UniqueFileAccess {
@@ -21,7 +18,8 @@ public class UniqueFileAccess {
     private String directory;
     private String extension;
 
-    public UniqueFileAccess(String user, Long timestamp, String directory, String extension){
+    public UniqueFileAccess(Long id, String user, Long timestamp, String directory, String extension){
+        this.id = id;
         this.user = user;
         this.timestamp = timestamp;
         this.directory = directory;
