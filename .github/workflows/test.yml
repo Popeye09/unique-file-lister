@@ -28,4 +28,4 @@ jobs:
           
       - name: Build and test with Gradle
         working-directory: unique-file-lister
-        run: ./gradlew test --no-daemon
+        run: ./gradlew test --info --no-daemon
