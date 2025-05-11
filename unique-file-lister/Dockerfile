@@ -4,7 +4,7 @@ WORKDIR /app
 COPY . .
 
 # Assemble only to skip tests
-# Tests will be ran when pushing to origin
+# Tests are run when pushing to origin
 RUN ./gradlew assemble --no-daemon
 
 # Run stage
