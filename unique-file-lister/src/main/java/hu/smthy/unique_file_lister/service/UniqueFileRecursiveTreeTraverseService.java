@@ -1,5 +1,6 @@
 package hu.smthy.unique_file_lister.service;
 
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,8 @@ import java.util.HashMap;
 public final class UniqueFileRecursiveTreeTraverseService implements UniqueFileService{
 
     private final FileReaderService fileReaderService;
+
+    @Setter
     private FileFilter fileFilter;
 
     @Autowired
@@ -22,8 +25,8 @@ public final class UniqueFileRecursiveTreeTraverseService implements UniqueFileS
         this.fileReaderService = fileReaderService;
     }
 
-    public Map<String, Integer> getUniqueFiles(Path path, String username) throws FileNotFoundException, NotDirectoryException, SecurityException{
-        File file = path.toFile();
+    public Map<String, Integer> getUniqueFiles(String path, String username) throws FileNotFoundException, NotDirectoryException, SecurityException{
+        File file = Path.of(path).toFile();
 
 
         if(!fileReaderService.exists(file)) {
@@ -39,26 +42,22 @@ public final class UniqueFileRecursiveTreeTraverseService implements UniqueFileS
 
         Map<String, Integer> map = new HashMap<>();
 
-        recursiveTreeSearch(path, map);
+        recursiveTreeSearch(file, map);
         
         return map;
     }
 
-    void recursiveTreeSearch(Path path, Map<String, Integer> map){
-
+    void recursiveTreeSearch(File root, Map<String, Integer> map){
         File[] files;
-        try{
-            files = fileReaderService.listFiles(path.toFile(), fileFilter);
-        } catch (SecurityException e) {
-            return;
-        }
+
+        files = fileReaderService.listFiles(root, fileFilter);
 
         for (File file : files) {
             if (fileReaderService.isFile(file)) {
                 map.put(file.getName(), map.getOrDefault(file.getName(), 0) + 1);
             }
-            if (fileReaderService.isDirectory(file)) {
-                recursiveTreeSearch(file.toPath(), map);
+            else if (fileReaderService.isDirectory(file)) {
+                recursiveTreeSearch(file, map);
             }
         }
     }

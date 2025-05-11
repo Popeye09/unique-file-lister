@@ -6,6 +6,6 @@ import java.nio.file.Path;
 import java.util.Map;
 
 public interface UniqueFileService {
-    Map<String, Integer> getUniqueFiles(Path path, String username)
+    Map<String, Integer> getUniqueFiles(String path, String username)
             throws FileNotFoundException, NotDirectoryException, SecurityException;
 }
