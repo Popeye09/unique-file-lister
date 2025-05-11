@@ -1,14 +1,12 @@
 package hu.smthy.unique_file_lister.controller;
 
 import hu.smthy.unique_file_lister.service.UniqueFileService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.nio.file.NotDirectoryException;
@@ -24,20 +22,24 @@ public class UniqueFileController {
         this.uniqueFileService = uniqueFileService;
     }
 
-    @GetMapping(path = {"/getUnique", "/getUnique/{directory}"}, produces = "application/json")
-    public ResponseEntity<Map<String, Integer>> getUnique(@PathVariable String directory,
-                                          @RequestParam String extension,
-                                          @RequestParam String username){
+    @GetMapping(path = {"/getUnique", "/getUnique/**"}, produces = "application/json")
+    public ResponseEntity<Map<String, Integer>> getUnique(
+            @RequestParam(required = false) String extension,
+            @RequestParam(required = false) String username,
+            HttpServletRequest request) {
 
         Map<String, Integer> result;
 
-        String path = (directory == null || directory.isEmpty()) ? "/" : "/" + directory;
+        String path = request.getRequestURI().substring("/getUnique".length());
+        path = path.isEmpty() ? "/" : path;
 
-        FileFilter extensionFilter = file -> file.getName().endsWith("." + extension);
-        uniqueFileService.setFileFilter(extensionFilter);
+        if(extension != null) {
+            FileFilter extensionFilter = file -> file.getName().endsWith("." + extension);
+            uniqueFileService.setFileFilter(extensionFilter);
+        }
 
         try{
-            result = uniqueFileService.getUniqueFiles(path, username);
+            result = uniqueFileService.getUniqueFiles(path, username == null ? System.getProperty("user.name") : username);
         }
         catch (FileNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyMap());
