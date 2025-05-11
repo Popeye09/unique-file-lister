@@ -7,6 +7,7 @@ import java.nio.file.Path;
 public class TestDataUtil {
     public static UniqueFileAccess createTestUniqueFileAccess(){
         return new UniqueFileAccess(
+                1L,
                 System.getProperty("user.name"),
                 System.currentTimeMillis(),
                 "/",
