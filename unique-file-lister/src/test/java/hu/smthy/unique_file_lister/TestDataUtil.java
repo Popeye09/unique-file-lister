@@ -8,7 +8,6 @@ public class TestDataUtil {
 
     public static UniqueFileAccess createTestUniqueFileAccess(){
         return UniqueFileAccess.builder()
-                .id(1L)
                 .username("root")
                 .timestamp(System.currentTimeMillis())
                 .directory("/")
