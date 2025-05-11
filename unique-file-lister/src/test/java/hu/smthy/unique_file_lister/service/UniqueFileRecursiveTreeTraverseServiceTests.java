@@ -1,16 +1,12 @@
-package hu.smthy.unique_file_lister;
+package hu.smthy.unique_file_lister.service;
 
-import hu.smthy.unique_file_lister.service.FileReaderService;
-import hu.smthy.unique_file_lister.service.UniqueFileRecursiveTreeTraverseService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.nio.file.NotDirectoryException;
 import java.nio.file.Path;
