@@ -2,6 +2,7 @@ package hu.smthy.unique_file_lister.repository;
 
 import hu.smthy.unique_file_lister.TestDataUtil;
 import hu.smthy.unique_file_lister.domain.UniqueFileAccessData;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,11 @@ public class UniqueFileAccessRepositoryIntegrationTest {
     @Autowired
     public UniqueFileAccessRepositoryIntegrationTest(UniqueFileAccessRepository underTest){
         this.underTest = underTest;
+    }
+
+    @BeforeEach
+    public void emptyRepository(){
+        underTest.deleteAll();
     }
 
     @Test
