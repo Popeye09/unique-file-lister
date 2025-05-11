@@ -9,7 +9,7 @@ public class TestDataUtil {
         return new UniqueFileAccess(
                 System.getProperty("user.name"),
                 System.currentTimeMillis(),
-                Path.of("/"),
+                "/",
                 ".txt"
         );
     }

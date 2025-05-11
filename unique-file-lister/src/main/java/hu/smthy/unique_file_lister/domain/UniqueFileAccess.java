@@ -18,10 +18,10 @@ public class UniqueFileAccess {
     private Long id;
     private String user;
     private Long timestamp;
-    private Path directory;
+    private String directory;
     private String extension;
 
-    public UniqueFileAccess(String user, Long timestamp, Path directory, String extension){
+    public UniqueFileAccess(String user, Long timestamp, String directory, String extension){
         this.user = user;
         this.timestamp = timestamp;
         this.directory = directory;
