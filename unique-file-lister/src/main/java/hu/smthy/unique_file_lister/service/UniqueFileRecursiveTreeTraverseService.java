@@ -1,5 +1,6 @@
 package hu.smthy.unique_file_lister.service;
 
+import hu.smthy.unique_file_lister.domain.UniqueFileAccess;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,13 +17,15 @@ import java.util.HashMap;
 public final class UniqueFileRecursiveTreeTraverseService implements UniqueFileService{
 
     private final FileReaderService fileReaderService;
+    private final HistoryService historyService;
 
     @Setter
     private FileFilter fileFilter;
 
     @Autowired
-    public UniqueFileRecursiveTreeTraverseService(final FileReaderService fileReaderService) {
+    public UniqueFileRecursiveTreeTraverseService(final FileReaderService fileReaderService, HistoryService historyService) {
         this.fileReaderService = fileReaderService;
+        this.historyService = historyService;
     }
 
     public Map<String, Integer> getUniqueFiles(String path, String username) throws FileNotFoundException, NotDirectoryException, SecurityException{
@@ -43,14 +46,23 @@ public final class UniqueFileRecursiveTreeTraverseService implements UniqueFileS
         Map<String, Integer> map = new HashMap<>();
 
         recursiveTreeSearch(file, map);
-        
+
+        historyService.save(UniqueFileAccess.builder()
+                .directory(path)
+                .username(username)
+                .timestamp(System.currentTimeMillis())
+                .build()
+        );
+
         return map;
     }
 
     void recursiveTreeSearch(File root, Map<String, Integer> map){
-        File[] files;
+        File[] files = fileReaderService.listFiles(root, fileFilter);
 
-        files = fileReaderService.listFiles(root, fileFilter);
+        if(files == null){
+            return;
+        }
 
         for (File file : files) {
             if (fileReaderService.isFile(file)) {

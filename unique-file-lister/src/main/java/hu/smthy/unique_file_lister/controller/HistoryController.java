@@ -17,5 +17,4 @@ public class HistoryController {
     public Iterable<UniqueFileAccess> history(){
         return historyService.readAll();
     }
-
 }
