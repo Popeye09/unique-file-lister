@@ -20,13 +20,14 @@ public class SimpleFileReaderService implements FileReaderService{
         return file.isFile();
     }
 
-
     public boolean canRead(File file) {
         return file.canRead();
     }
 
-
     public File[] listFiles(File file, FileFilter fileFilter) throws SecurityException {
         return file.listFiles(fileFilter);
+    }
+    public File[] listFiles(File file) throws SecurityException {
+        return listFiles(file, null);
     }
 }
