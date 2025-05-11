@@ -15,7 +15,7 @@ jobs:
           POSTGRES_DB: test
         ports:
           - 5432:5432
-        options: --health-cmd pg_isready
+        options: --health-cmd pg_isready --health-interval 5s
 
     steps:
       - uses: actions/checkout@v4
