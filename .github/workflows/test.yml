@@ -4,14 +4,15 @@ on: push
 
 jobs:
   test:
+    name: Run tests
     runs-on: ubuntu-latest
     services:
       postgres:
         image: postgres:latest
         env:
           POSTGRES_USER: test
-          POSTGRES_PASSWORD: test
-          POSTGRES_DB: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: test
         ports:
           - 5432:5432
         options: --health-cmd pg_isready
@@ -27,4 +28,4 @@ jobs:
           
       - name: Build and test with Gradle
         working-directory: unique-file-lister
-        run: ./gradlew test
+        run: ./gradlew test --no-daemon
