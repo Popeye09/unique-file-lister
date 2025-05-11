@@ -20,6 +20,8 @@ public class UniqueFileRecursiveTreeTraverseServiceTests {
 
     @Mock
     private FileReaderService fileReaderService;
+    @Mock
+    private HistoryService historyService;
 
     @InjectMocks
     private UniqueFileRecursiveTreeTraverseService underTest;
