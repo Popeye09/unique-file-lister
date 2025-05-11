@@ -24,12 +24,14 @@ public class UniqueFileController {
         this.uniqueFileService = uniqueFileService;
     }
 
-    @GetMapping(path = "/getUnique/{directory}", produces = "application/json")
-    public ResponseEntity<Map<String, Integer>> getUnique(@PathVariable String path,
+    @GetMapping(path = {"/getUnique", "/getUnique/{directory}"}, produces = "application/json")
+    public ResponseEntity<Map<String, Integer>> getUnique(@PathVariable String directory,
                                           @RequestParam String extension,
                                           @RequestParam String username){
 
         Map<String, Integer> result;
+
+        String path = (directory == null || directory.isEmpty()) ? "/" : "/" + directory;
 
         FileFilter extensionFilter = file -> file.getName().endsWith("." + extension);
         uniqueFileService.setFileFilter(extensionFilter);
@@ -46,5 +48,6 @@ public class UniqueFileController {
         catch(SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Collections.emptyMap());
         }
-        return ResponseEntity.ok(result);    }
+        return ResponseEntity.ok(result);
+    }
 }
