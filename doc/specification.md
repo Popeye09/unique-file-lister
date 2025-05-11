@@ -16,7 +16,7 @@ Services use Postgres database to store query history. The project uses Gradle f
   - **Query Parameter**: `username` - The Linux username of the requester.
   - **Functionality**: 
     - Recursively traverse the directory and find files with unique base name.
-    - Return a JSON array of file base names with number of occurrences with that unique name.
+    - Return a JSON array of file base names with number of occurrences.
     - Log the query (username, timestamp, directory) in the database.
 
 ### HistoryService
