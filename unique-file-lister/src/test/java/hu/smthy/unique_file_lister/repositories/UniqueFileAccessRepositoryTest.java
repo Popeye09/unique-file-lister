@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class UniqueFileAccessRepositoryTest {
-    private UniqueFileAccessRepository underTest;
+    private final UniqueFileAccessRepository underTest;
 
     @Autowired
     public UniqueFileAccessRepositoryTest(UniqueFileAccessRepository underTest){
