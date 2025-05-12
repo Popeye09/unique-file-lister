@@ -18,6 +18,10 @@ import java.nio.file.NotDirectoryException;
 import java.util.Collections;
 import java.util.Map;
 
+/**
+ * Controller for handling unique file counting operations.
+ * Provides endpoints to traverse directories and count unique files based on their base names.
+ */
 @RestController
 @Tag(name = "files", description = "Unique file counting operations")
 public class UniqueFileController {
@@ -28,6 +32,36 @@ public class UniqueFileController {
         this.uniqueFileService = uniqueFileService;
     }
 
+    /**
+     * Handles GET requests to /getUnique/** to count unique files in the specified directory.
+     *
+     * <p>Recursively traverses the directory and finds files with unique base names, counting their occurrences.
+     * The base name is the file name without the extension. If an extension is provided, only files with that extension are considered.
+     *
+     * <p>The path is extracted from the request URI after "/getUnique". For example, a request to "/getUnique/usr/bin" will traverse "/usr/bin".
+     * If no path is provided (i.e., "/getUnique"), it defaults to the root directory "/".
+     *
+     * <p>Successful requests are recorded and can be retrieved via the /history endpoint.
+     *
+     * <p>Parameters:
+     * <ul>
+     * <li><b>extension</b> (optional): Query parameter to filter files by extension (e.g., "conf" returns every file that ends in .conf).</li>
+     * <li><b>username</b> (optional): Query parameter to specify the user initiating the request. Defaults to the system property "user.name".</li>
+     * </ul>
+     *
+     * <p>Returns:
+     * <ul>
+     * <li><b>200 OK</b>: A map of unique file base names to their occurrence counts.</li>
+     * <li><b>404 Not Found</b>: If the specified directory does not exist.</li>
+     * <li><b>400 Bad Request</b>: If the specified path is not a directory.</li>
+     * <li><b>403 Forbidden</b>: If access to the directory is denied.</li>
+     * </ul>
+     *
+     * @param extension Optional query parameter to filter files by extension.
+     * @param username Optional query parameter to specify the user.
+     * @param request The HttpServletRequest object, used to extract the path.
+     * @return A ResponseEntity with the result map or an empty map with an error status.
+     */
     @GetMapping(path = "/getUnique/**", produces = "application/json")
     @Operation(
             summary = "Recursively traverse the directory and find files with unique base name and count their occurrences.",
