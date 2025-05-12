@@ -5,7 +5,7 @@ A RESTful web application built with Spring Boot to recursively traverse directo
 If you have any questions or offers to make, feel free to **[Contact](#contact)** me.
 
 
-[![Build Status](https://github.com/Popeye09/unique-file-lister/actions/workflows/ci.yml/badge.svg)](https://github.com/Popeye09/unique-file-lister/actions)
+[Build Status](https://github.com/Popeye09/unique-file-lister/actions)
 
 ## Table of Contents
 
