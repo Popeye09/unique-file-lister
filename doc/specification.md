@@ -11,9 +11,10 @@ Services use Postgres database to store query history. The project uses Gradle f
 ## Functional Requirements
 
 ### UniqueFileService
-- **Endpoint**: `GET /getUnique/{directory}?username={username}`
+- **Endpoint**: `GET /getUnique/{directory}?username={username}&extension={extension}`
   - **Path Variable**: `directory` - The directory path to search recursively.
   - **Query Parameter**: `username` - The Linux username of the requester.
+  - **Query Parameter**: `extension` - Extension of the files that should be listed.
   - **Functionality**: 
     - Recursively traverse the directory and find files with unique base name.
     - Return a JSON array of file base names with number of occurrences.
@@ -23,16 +24,17 @@ Services use Postgres database to store query history. The project uses Gradle f
 - **Endpoint**: `GET /history`
   - **Functionality**: 
     - Retrieve all query records from the database.
-    - Return a JSON array of objects with `username`, `timestamp`, and `directory`.
+    - Return a JSON array of objects with `username`, `timestamp`, `directory` and `extension`.
 
 ## Database
 - **Type**: Postgres
 - **Table**: `history`
   - **Columns**:
     - `id`: BIGINT, PRIMARY KEY, AUTO_INCREMENT
-    - `username`: VARCHAR(255)
-    - `timestamp`: TIMESTAMP
-    - `directory`: VARCHAR(255)
+    - `username`: TEXT
+    - `timestamp`: BIGINT
+    - `directory`: TEXT
+    - `extension`: TEXT
 
 ## Build and Deployment
 - **Build Tool**: Gradle
