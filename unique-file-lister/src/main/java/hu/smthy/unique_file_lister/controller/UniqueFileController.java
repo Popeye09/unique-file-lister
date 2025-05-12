@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.io.FileNotFoundException;
@@ -29,40 +28,57 @@ public class UniqueFileController {
         this.uniqueFileService = uniqueFileService;
     }
 
-    @GetMapping(path = { "/getUnique", "/getUnique/{directory:.+}" }, produces = "application/json")
+    @GetMapping(path = "/getUnique/**", produces = "application/json")
     @Operation(
             summary = "Recursively traverse the directory and find files with unique base name and count their occurrences.",
-            description = "Successful attempts are recorded and can be recalled at /history.\n" +
-                    "NOTE: Swagger-UI percent-encodes '/' in path parameters, so to test nested paths you may need to " +
-                    "forge the request yourself, e.g.: GET /getUnique/usr/local. Sending a request to this endpoint without parameters will list all unique-files in the system (as the directory interpreted as '/'), it may take a long time.\n" +
-                    "It is recommended to test with /getUnique/{directory}.",
+            description = """
+                    Successful attempts are recorded and can be recalled at /history.
+                    NOTES: Swagger-UI percent-encodes '/' in path parameters, so to test nested paths you may need to 
+                    forge the request yourself, e.g.: GET /getUnique/usr/bin.
+                    Note that the implementation does not check for symbolic links, so they are also found.
+                    Do not call this on a directory that has recursive symbolic links as it will stuck in an infinite loop.
+                    It is recommended to test with /getUnique/{directory}.
+                    Implementation may be added later for detecting symbolic link recursion.
+                    """,
             parameters = {
-                    @Parameter(name="extension", description="only files with this extension"),
-                    @Parameter(name="username", description="user initiating the request"),
                     @Parameter(
                             in = ParameterIn.PATH,
                             name = "directory",
                             description = "Directory to traverse, relative to root",
                             required = false,
-                            schema = @Schema(type = "string", example = "usr/local")
+                            schema = @Schema(type = "string", example = "bin")
+                    ),
+                    @Parameter(
+                            in = ParameterIn.QUERY,
+                            name = "extension",
+                            description = "only files with this extension",
+                            required = false,
+                            schema = @Schema(type = "string", example = "conf")
+                    ),
+                    @Parameter(
+                            in = ParameterIn.QUERY,
+                            name = "username",
+                            description = "user initiating the request",
+                            required = false,
+                            schema = @Schema(type = "string")
                     ),
             },
             responses = {
-                    @ApiResponse(responseCode="200", description="OK"),
-                    @ApiResponse(responseCode="404", description="Directory not found"),
-                    @ApiResponse(responseCode="400", description="Not a directory"),
-                    @ApiResponse(responseCode="403", description="Access denied")
+                    @ApiResponse(responseCode = "200", description = "OK"),
+                    @ApiResponse(responseCode = "404", description = "Directory not found"),
+                    @ApiResponse(responseCode = "400", description = "Not a directory"),
+                    @ApiResponse(responseCode = "403", description = "Access denied")
             }
     )
     public ResponseEntity<Map<String, Integer>> getUnique(
-            @PathVariable(value = "directory", required = false) String directory,
             @RequestParam(required = false) String extension,
-            @RequestParam(required = false) String username
+            @RequestParam(required = false) String username,
+            HttpServletRequest request
     ) {
-
         Map<String, Integer> result;
 
-        String path = (directory == null) ? "/" : "/" + directory;
+        String path = request.getRequestURI().substring("/getUnique".length());
+        path = path.isEmpty() ? "/" : path;
 
         try{
             result = uniqueFileService.getUniqueFiles(path, username == null ? System.getProperty("user.name") : username, extension);
