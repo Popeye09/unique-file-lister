@@ -1,6 +1,6 @@
 # Unique File Lister
 
-A RESTful web application built with Spring Boot to recursively traverse directories, list files with unique base names, and track query history in a PostgreSQL database. This project is meant to demonstrate my software engineering skills, including API design, database (repository) integration, testing, containerization and CI/CD practices.
+A RESTful web application built with Spring Boot to recursively traverse directories, list files with unique base names, and track query history in a PostgreSQL database. This project is meant to demonstrate my software engineering skills, including API design, database (repository) integration, testing, containerization and CI/CD practices. It is meant to run on a Linux based system.
 
 If you have any questions or offers to make, feel free to **[Contact](#contact)** me.
 
@@ -48,6 +48,14 @@ The application uses a PostgreSQL database to store query history, Gradle for bu
 ### Prerequisites
 - Podman (or Docker, see [Run](#run))
 - Make (for running the provided `Makefile`)
+
+The project is tested to work on Linux-based systems, but if you want to run it on macOS, run:
+
+```bash
+podman machine init
+podman machine start
+```
+first.
 
 ### Run
 1. **Clone the Repository**:
