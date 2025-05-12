@@ -18,7 +18,6 @@ public final class UniqueFileRecursiveTreeTraverseService implements UniqueFileS
 
     private final FileReaderService fileReaderService;
     private final HistoryService historyService;
-    private FileFilter fileFilter = file -> true;
 
     @Autowired
     public UniqueFileRecursiveTreeTraverseService(final FileReaderService fileReaderService, HistoryService historyService) {
@@ -42,11 +41,16 @@ public final class UniqueFileRecursiveTreeTraverseService implements UniqueFileS
 
         Map<String, Integer> map = new HashMap<>();
 
+        FileFilter fileFilter;
+
         if(extension != null && !extension.isEmpty()) {
             fileFilter = f -> f.getName().endsWith("." + extension);
         }
+        else{
+            fileFilter = f -> true;
+        }
 
-        recursiveTreeSearch(file, map);
+        recursiveTreeSearch(file, map, fileFilter);
 
         historyService.save(UniqueFileAccess.builder()
                 .directory(path)
@@ -59,7 +63,7 @@ public final class UniqueFileRecursiveTreeTraverseService implements UniqueFileS
         return map;
     }
 
-    void recursiveTreeSearch(File root, Map<String, Integer> map){
+    void recursiveTreeSearch(File root, Map<String, Integer> map, FileFilter fileFilter){
         File[] files = fileReaderService.listFiles(root);
 
         if(files == null){
@@ -71,7 +75,7 @@ public final class UniqueFileRecursiveTreeTraverseService implements UniqueFileS
                 map.put(file.getName(), map.getOrDefault(file.getName(), 0) + 1);
             }
             else if (fileReaderService.isDirectory(file)) {
-                recursiveTreeSearch(file, map);
+                recursiveTreeSearch(file, map, fileFilter);
             }
         }
     }
