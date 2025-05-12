@@ -28,6 +28,7 @@ run: build-image
 	until podman exec $(DB_CONTAINER) pg_isready -U postgres; do sleep 2; done
 	# Create databases
 	# Create databases
+	sleep 2
 	for db in $(APP_NAMES); do \
 		echo "Creating database $$db..."; \
 		podman exec -u postgres $(DB_CONTAINER) createdb -U postgres $$db || exit 1; \
