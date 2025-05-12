@@ -1,5 +1,6 @@
 package hu.smthy.unique_file_lister.service;
 
+import hu.smthy.unique_file_lister.domain.UniqueFileAccess;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -34,7 +35,7 @@ public class UniqueFileRecursiveTreeTraverseServiceTests {
         when(fileReaderService.exists(rootDirectory)).thenReturn(false);
 
         assertThrows(FileNotFoundException.class, () -> {
-            underTest.getUniqueFiles(invalidPath, "root");
+            underTest.getUniqueFiles(invalidPath, System.getProperty("user.name"), "");
         }, "Expected FileNotFoundException for non-existing path");
     }
 
@@ -47,7 +48,7 @@ public class UniqueFileRecursiveTreeTraverseServiceTests {
         when(fileReaderService.isDirectory(rootDirectory)).thenReturn(false);
 
         assertThrows(NotDirectoryException.class, () -> {
-            underTest.getUniqueFiles(invalidPath, "root");
+            underTest.getUniqueFiles(invalidPath, System.getProperty("user.name"), "");
         }, "Expected NotDirectoryException for path not leading to a directory");
     }
 
@@ -61,7 +62,7 @@ public class UniqueFileRecursiveTreeTraverseServiceTests {
         when(fileReaderService.canRead(rootDirectory)).thenReturn(false);
 
         assertThrows(SecurityException.class, () -> {
-            underTest.getUniqueFiles(invalidPath, "root");
+            underTest.getUniqueFiles(invalidPath, System.getProperty("user.name"), "");
         }, "Expected SecurityException for unreadable directory");
     }
 
@@ -78,12 +79,12 @@ public class UniqueFileRecursiveTreeTraverseServiceTests {
         when(files[0].getName()).thenReturn("unique1.txt");
         when(files[1].getName()).thenReturn("unique2.txt");
 
-        when(fileReaderService.listFiles(rootDirectory, null)).thenReturn(files);
+        when(fileReaderService.listFiles(rootDirectory)).thenReturn(files);
 
         when(fileReaderService.isFile(files[0])).thenReturn(true);
         when(fileReaderService.isFile(files[1])).thenReturn(true);
 
-        Map<String, Integer> result = underTest.getUniqueFiles(path, "root");
+        Map<String, Integer> result = underTest.getUniqueFiles(path, System.getProperty("user.name"), "");
 
         assertAll(
                 () -> assertEquals(1, result.get(files[0].getName())),
@@ -104,7 +105,7 @@ public class UniqueFileRecursiveTreeTraverseServiceTests {
         when(files[0].getName()).thenReturn("unique.txt");
         when(files[2].getName()).thenReturn("duplicate.txt");
 
-        when(fileReaderService.listFiles(root, null)).thenReturn(files);
+        when(fileReaderService.listFiles(root)).thenReturn(files);
 
         when(fileReaderService.isFile(files[0])).thenReturn(true);
         when(fileReaderService.isFile(files[1])).thenReturn(false);
@@ -116,9 +117,9 @@ public class UniqueFileRecursiveTreeTraverseServiceTests {
         when(filesInSubdirectory[0].getName()).thenReturn("duplicate.txt");
         when(fileReaderService.isFile(filesInSubdirectory[0])).thenReturn(true);
 
-        lenient().when(fileReaderService.listFiles(same(files[1]), isNull())).thenReturn(filesInSubdirectory);
+        lenient().when(fileReaderService.listFiles(same(files[1]))).thenReturn(filesInSubdirectory);
 
-        Map<String, Integer> result = underTest.getUniqueFiles(path, "root");
+        Map<String, Integer> result = underTest.getUniqueFiles(path, System.getProperty("user.name"), "");
 
         assertAll(
                 () -> assertEquals(1, result.get(files[0].getName())), // unique.txt

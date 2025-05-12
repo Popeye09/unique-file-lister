@@ -20,7 +20,7 @@ public class SimpleFileReaderServiceTests {
 
     @Test
     public void testReadingRoot(){
-        File[] files = underTest.listFiles(Path.of("/").toFile(), null);
+        File[] files = underTest.listFiles(Path.of("/").toFile());
 
         assertThat(files)
                 .isNotNull()
