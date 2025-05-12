@@ -15,8 +15,8 @@ public class OpenApiConfiguration {
                         .title("Unique File Lister API")
                         .version("1.0.0")
                         .description("Recursively traverse the directory and find files with unique base name." +
-                                " Return a JSON array of file base names with number of occurrences." +
-                                " Note that the implementation does not check for symbolic links, so they are also found.")
+                                " Return a JSON array of file base names with number of occurrences."
+                        )
                         .contact(new Contact()
                                 .name("Kovács Áron")
                                 .email("kovacs.aron13@gmail.com")
