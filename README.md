@@ -8,6 +8,19 @@ If you have any questions or offers to make, feel free to **[Contact](#contact)*
 [Build Status](https://github.com/Popeye09/unique-file-lister/actions)
 
 ## Table of Contents
+## Functional Requirements
+
+### UniqueFileService
+- **Endpoint**: `GET /getUnique/{directory}?username={username}&extension={extension}`
+  - **Path Variable**: `directory` - The directory path to search recursively.
+  - **Query Parameter**: `username` - The Linux username of the requester.
+  - **Query Parameter**: `extension` - Extension of the files that should be listed.
+  - **Functionality**: 
+    - Recursively traverse the directory and find files with unique base name.
+    - Return a JSON array of file base names with number of occurrences.
+    - Log the query (username, timestamp, directory) in the database.
+
+### HistoryService
 
 - [Overview](#overview)
 - [Installation and Setup](#installation-and-setup)
@@ -23,7 +36,7 @@ If you have any questions or offers to make, feel free to **[Contact](#contact)*
 
 ## Overview
 
-The Unique File Lister is a Spring Boot application designed to showcase common object oriented software engineering practices used when developing APIs. It provides two main services:
+The Unique File Lister is a Spring Boot application I designed to showcase common object oriented software engineering practices used when developing APIs. It provides two main services:
 
 - **UniqueFileService**: Recursively traverses a specified directory to identify files with unique base names and count their occurrences, returning results as a JSON array.
 - **HistoryService**: Logs and retrieves query history, including usernames, timestamps, directories, and file extension filters.
