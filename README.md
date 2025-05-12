@@ -209,8 +209,10 @@ To run the tests locally, you must run a postgres database yourself.
 ## CI/CD
 
 The project uses GitHub Actions for continuous integration. The workflow:
-- Runs tests on every push or pull request.
-- Ensures code quality and build stability.
+- Runs tests on every push.
+- Tests code readability.
+
+_Note that it takes a lot of to satisfy super-linter_
 
 See `.github/workflows` for details.
 
