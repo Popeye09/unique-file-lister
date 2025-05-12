@@ -258,4 +258,6 @@ Feel free to reach out with questions or offers!
 
     - /generateFileStructure?depth=5&totalFiles=20&uniqueBaseNames=3
 
+- upload images to dockerhub!
+
 [Jump up](#unique-file-lister)
