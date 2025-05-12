@@ -36,7 +36,7 @@ public class HistoryControllerIntegrationTests {
     @Test
     public void testHistoryReturnsCorrectData() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/getUnique/bin")
+                MockMvcRequestBuilders.get("/getUnique/bin?username="+System.getProperty("user.name"))
                         .contentType(MediaType.APPLICATION_JSON)
         );
         mockMvc.perform(
