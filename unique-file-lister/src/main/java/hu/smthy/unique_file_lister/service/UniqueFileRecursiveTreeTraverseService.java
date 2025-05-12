@@ -1,10 +1,7 @@
 package hu.smthy.unique_file_lister.service;
 
 import hu.smthy.unique_file_lister.domain.UniqueFileAccess;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
@@ -29,7 +26,6 @@ public final class UniqueFileRecursiveTreeTraverseService implements UniqueFileS
      * @param fileReaderService Service for reading file system information.
      * @param historyService Service for recording history of successful file listing operations.
      */
-    @Autowired
     public UniqueFileRecursiveTreeTraverseService(final FileReaderService fileReaderService, HistoryService historyService) {
         this.fileReaderService = fileReaderService;
         this.historyService = historyService;
