@@ -212,7 +212,7 @@ The project uses GitHub Actions for continuous integration. The workflow:
 - Runs tests on every push.
 - Tests code readability.
 
-_Note that it takes a lot of to satisfy super-linter_
+_Note that it takes a lot of effort to satisfy super-linter_
 
 See `.github/workflows` for details.
 
