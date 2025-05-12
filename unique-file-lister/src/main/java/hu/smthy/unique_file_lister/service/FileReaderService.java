@@ -8,6 +8,5 @@ public interface FileReaderService {
     boolean isDirectory(File file);
     boolean isFile(File file);
     boolean canRead(File file);
-    File[] listFiles(File file, FileFilter fileFilter) throws SecurityException;
     File[] listFiles(File file) throws SecurityException;
 }

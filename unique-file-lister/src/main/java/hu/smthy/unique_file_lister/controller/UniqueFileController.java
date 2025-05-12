@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.nio.file.NotDirectoryException;
 import java.util.Collections;
@@ -33,13 +32,8 @@ public class UniqueFileController {
         String path = request.getRequestURI().substring("/getUnique".length());
         path = path.isEmpty() ? "/" : path;
 
-        if(extension != null) {
-            FileFilter extensionFilter = file -> file.getName().endsWith("." + extension);
-            uniqueFileService.setFileFilter(extensionFilter);
-        }
-
         try{
-            result = uniqueFileService.getUniqueFiles(path, username == null ? System.getProperty("user.name") : username);
+            result = uniqueFileService.getUniqueFiles(path, username == null ? System.getProperty("user.name") : username, extension);
         }
         catch (FileNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyMap());

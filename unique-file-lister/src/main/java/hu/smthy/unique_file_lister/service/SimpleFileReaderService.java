@@ -3,7 +3,6 @@ package hu.smthy.unique_file_lister.service;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.io.FileFilter;
 
 @Service
 public class SimpleFileReaderService implements FileReaderService{
@@ -24,10 +23,7 @@ public class SimpleFileReaderService implements FileReaderService{
         return file.canRead();
     }
 
-    public File[] listFiles(File file, FileFilter fileFilter) throws SecurityException {
-        return file.listFiles(fileFilter);
-    }
     public File[] listFiles(File file) throws SecurityException {
-        return listFiles(file, null);
+        return file.listFiles();
     }
 }

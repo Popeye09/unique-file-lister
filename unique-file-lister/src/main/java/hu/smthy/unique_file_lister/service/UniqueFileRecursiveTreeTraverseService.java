@@ -18,9 +18,7 @@ public final class UniqueFileRecursiveTreeTraverseService implements UniqueFileS
 
     private final FileReaderService fileReaderService;
     private final HistoryService historyService;
-
-    @Setter
-    private FileFilter fileFilter;
+    private FileFilter fileFilter = file -> true;
 
     @Autowired
     public UniqueFileRecursiveTreeTraverseService(final FileReaderService fileReaderService, HistoryService historyService) {
@@ -28,9 +26,8 @@ public final class UniqueFileRecursiveTreeTraverseService implements UniqueFileS
         this.historyService = historyService;
     }
 
-    public Map<String, Integer> getUniqueFiles(String path, String username) throws FileNotFoundException, NotDirectoryException, SecurityException{
+    public Map<String, Integer> getUniqueFiles(String path, String username, String extension) throws FileNotFoundException, NotDirectoryException, SecurityException{
         File file = Path.of(path).toFile();
-
 
         if(!fileReaderService.exists(file)) {
             throw new FileNotFoundException("Path must lead to an existing directory");
@@ -45,11 +42,16 @@ public final class UniqueFileRecursiveTreeTraverseService implements UniqueFileS
 
         Map<String, Integer> map = new HashMap<>();
 
+        if(extension != null && !extension.isEmpty()) {
+            fileFilter = f -> f.getName().endsWith("." + extension);
+        }
+
         recursiveTreeSearch(file, map);
 
         historyService.save(UniqueFileAccess.builder()
                 .directory(path)
                 .username(username)
+                .extension(extension)
                 .timestamp(System.currentTimeMillis())
                 .build()
         );
@@ -58,14 +60,14 @@ public final class UniqueFileRecursiveTreeTraverseService implements UniqueFileS
     }
 
     void recursiveTreeSearch(File root, Map<String, Integer> map){
-        File[] files = fileReaderService.listFiles(root, fileFilter);
+        File[] files = fileReaderService.listFiles(root);
 
         if(files == null){
             return;
         }
 
         for (File file : files) {
-            if (fileReaderService.isFile(file)) {
+            if (fileReaderService.isFile(file) && fileFilter.accept(file)) {
                 map.put(file.getName(), map.getOrDefault(file.getName(), 0) + 1);
             }
             else if (fileReaderService.isDirectory(file)) {
