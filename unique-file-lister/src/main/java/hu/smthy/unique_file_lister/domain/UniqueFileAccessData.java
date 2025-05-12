@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * JPA entity representing a unique file access record in a repository.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

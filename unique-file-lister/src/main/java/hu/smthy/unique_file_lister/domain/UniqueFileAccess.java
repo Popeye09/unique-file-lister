@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents a unique file access operation, including the directory accessed, user, and timestamp.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
