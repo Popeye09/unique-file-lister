@@ -93,7 +93,7 @@ The application exposes two REST endpoints.
 ### 1. Unique File Listing
 - **Endpoint**: `GET /getUnique/{directory}?username={username}&extension={extension}`
 - **Parameters**:
-  - `directory` (path): Directory to traverse (e.g., `/usr/bin`).
+  - `directory` (path): Directory to traverse (e.g., `usr/bin`). This will be interpreted as /usr/bin
   - `username` (query, optional): Username of the requester (defaults to system user).
   - `extension` (query, optional): File extension filter (e.g., `txt`).
 - **Example Request**:
