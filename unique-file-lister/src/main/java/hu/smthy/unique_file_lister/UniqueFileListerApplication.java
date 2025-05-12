@@ -11,6 +11,5 @@ public class UniqueFileListerApplication {
 				UniqueFileListerApplication.class,
 				args
 		);
-		// TODO: use IOC (inversion of control) to initialize services
 	}
 }
