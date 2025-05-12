@@ -71,7 +71,7 @@ Running the project creates 2 unique-file-lister instances available on your hos
 - **app1**: `http://localhost:8081`
 - **app2**: `http://localhost:8082`
 
-Each instance connects to a single database instance to their respective databases (`app1` and `app2`).
+Each instance connects to a single database container that holds their respective databases (`app1` and `app2`).
 
 For the examples, I will use app1.
 
@@ -212,7 +212,7 @@ The project uses GitHub Actions for continuous integration. The workflow:
 - Runs tests on every push or pull request.
 - Ensures code quality and build stability.
 
-See `.github/workflows/ci.yml` for details.
+See `.github/workflows` for details.
 
 ## Contact
 
@@ -225,8 +225,14 @@ Feel free to reach out with questions or offers!
 
 ## Features planned
 
-Read files as specific user (if user exists)
+- Read files as specific user (if user exists)
 
-Handle and access denied errors.
+- Handle and access denied errors.
+
+- Detect and prevent infinite loops caused by recursive symbolic links.
+
+- Add REST endpoint
+
+    - /generateFileStructure?depth=5&totalFiles=20&uniqueBaseNames=3
 
 [Jump up](#unique-file-lister)
