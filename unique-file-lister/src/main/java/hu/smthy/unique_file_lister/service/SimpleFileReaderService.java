@@ -4,6 +4,10 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 
+/**
+ * Service implementation for reading file system information.
+ * This class provides simple wrappers around Java's File class methods.
+ */
 @Service
 public class SimpleFileReaderService implements FileReaderService{
 
