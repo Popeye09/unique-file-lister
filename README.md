@@ -7,20 +7,11 @@ If you have any questions or offers to make, feel free to **[Contact](#contact)*
 
 [Build Status](https://github.com/Popeye09/unique-file-lister/actions)
 
+## Functional requirements
+
+For the specification, see [doc/specification.md](doc/specification.md)
+
 ## Table of Contents
-## Functional Requirements
-
-### UniqueFileService
-- **Endpoint**: `GET /getUnique/{directory}?username={username}&extension={extension}`
-  - **Path Variable**: `directory` - The directory path to search recursively.
-  - **Query Parameter**: `username` - The Linux username of the requester.
-  - **Query Parameter**: `extension` - Extension of the files that should be listed.
-  - **Functionality**: 
-    - Recursively traverse the directory and find files with unique base name.
-    - Return a JSON array of file base names with number of occurrences.
-    - Log the query (username, timestamp, directory) in the database.
-
-### HistoryService
 
 - [Overview](#overview)
 - [Installation and Setup](#installation-and-setup)
