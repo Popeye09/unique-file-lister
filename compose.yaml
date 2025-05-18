@@ -1,0 +1,50 @@
+name: "unique-file-lister"
+
+networks:
+  unique-file-lister-network:
+services:
+  unique-file-lister-app1:
+    build:
+      context: unique-file-lister
+      dockerfile: Dockerfile
+    depends_on:
+      - "unique-file-lister-database"
+    ports:
+      - 8081:8080
+    container_name: "unique-file-lister-app1"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://unique-file-lister-database:5432/app1
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=password
+    networks:
+      - unique-file-lister-network
+    
+
+  unique-file-lister-app2:
+    build:
+      context: unique-file-lister
+      dockerfile: Dockerfile
+    depends_on:
+      - "unique-file-lister-database"
+    ports:
+      - 8082:8080
+    container_name: "unique-file-lister-app2"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://unique-file-lister-database:5432/app2
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=password
+    networks:
+      - unique-file-lister-network
+
+  unique-file-lister-database:
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    container_name: "unique-file-lister-database"
+    environment:
+      - POSTGRES_PASSWORD=password
+    test: pg_isready -U postgres
+    volumes:
+      - ./create_app_databases.sql:/docker-entrypoint-initdb.d/create_app_databases.sql
+    networks:
+      - unique-file-lister-network
