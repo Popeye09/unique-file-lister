@@ -9,7 +9,6 @@ DB_CONTAINER = unique-file-lister-database
 NETWORK_NAME = unique-file-lister-network
 IMAGE_NAME = smthy/unique-file-lister:latest
 IMAGE_BUILDER_NAME = smthy/unique-file-lister-builder
-GRADLE_VERSION = 8.13
 
 
 build-local:
